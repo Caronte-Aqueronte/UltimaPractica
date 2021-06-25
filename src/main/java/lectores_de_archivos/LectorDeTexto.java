@@ -26,4 +26,15 @@ public class LectorDeTexto extends Lector implements Leer {
         }
         fr.close();
     }
+    public void construirRegistro(String [] campos){
+        switch(campos[0]){
+            case "tablero":
+                break;
+            case "pierdeturno":
+                break;
+            case "tirardados":
+                break;
+                
+        }
+    }
 }
