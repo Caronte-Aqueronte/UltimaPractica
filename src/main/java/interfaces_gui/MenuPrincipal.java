@@ -66,7 +66,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevaPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaPartidaActionPerformed
-        
+        BuscadorDeArchivo buscador = new BuscadorDeArchivo();
+        buscador.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnNuevaPartidaActionPerformed
 
 

@@ -11,11 +11,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import lectores_de_archivos.LectorDeTexto;
 
 public class BuscadorDeArchivo extends javax.swing.JFrame {
+
     Tablero tablero;
+
     public BuscadorDeArchivo() {
         initComponents();
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -23,22 +25,47 @@ public class BuscadorDeArchivo extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         txtpath = new javax.swing.JTextField();
         btnBucar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtErrores = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        txtAsiertos = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBackground(new java.awt.Color(0, 153, 153));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txtpath.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtpath.setEnabled(false);
         jPanel1.add(txtpath, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 452, 31));
 
-        btnBucar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/search-alt-2-regular-24 (1).png"))); // NOI18N
+        btnBucar.setBackground(new java.awt.Color(255, 255, 255));
+        btnBucar.setFont(new java.awt.Font("Verdana", 0, 24)); // NOI18N
+        btnBucar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/lupa.png"))); // NOI18N
+        btnBucar.setText("Buscar");
         btnBucar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBucarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnBucar, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 40, 60, 30));
+        jPanel1.add(btnBucar, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 40, 200, 30));
+
+        jLabel1.setFont(new java.awt.Font("Verdana", 0, 24)); // NOI18N
+        jLabel1.setText("Errores:");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, 170, -1));
+
+        txtErrores.setColumns(20);
+        txtErrores.setRows(5);
+        jScrollPane3.setViewportView(txtErrores);
+
+        jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 780, 190));
+
+        txtAsiertos.setColumns(20);
+        txtAsiertos.setRows(5);
+        jScrollPane4.setViewportView(txtAsiertos);
+
+        jPanel1.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 780, 190));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -48,10 +75,11 @@ public class BuscadorDeArchivo extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBucarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBucarActionPerformed
@@ -71,14 +99,15 @@ public class BuscadorDeArchivo extends javax.swing.JFrame {
             File fichero = filechooser.getSelectedFile();
             //el txtxpatch escribira la direccion del archivo
             txtpath.setText(fichero.getAbsolutePath());
-            LectorDeTexto lectorDeTexto = new LectorDeTexto(tablero);
+            LectorDeTexto lectorDeTexto = new LectorDeTexto(tablero, txtAsiertos, txtErrores);
             try {
                 boolean leerArchivo = lectorDeTexto.leerArchivo(fichero);
-                if(leerArchivo == true){
-                    
-                }else{
+                if (leerArchivo == true) {
+
+                } else {
                     MenuPrincipal menuPrincipal = new MenuPrincipal();
                     menuPrincipal.setVisible(true);
+                    this.dispose();
                 }
             } catch (IOException ex) {
                 Logger.getLogger(BuscadorDeArchivo.class.getName()).log(Level.SEVERE, null, ex);
@@ -88,7 +117,12 @@ public class BuscadorDeArchivo extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBucar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTextArea txtAsiertos;
+    private javax.swing.JTextArea txtErrores;
     private javax.swing.JTextField txtpath;
     // End of variables declaration//GEN-END:variables
 }
