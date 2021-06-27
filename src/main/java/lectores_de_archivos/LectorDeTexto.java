@@ -1,13 +1,9 @@
 package lectores_de_archivos;
 
-import clases_para_tablero.Casilla;
-import clases_para_tablero.Tablero;
+import clases_para_tablero.*;
 import interfaces.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.awt.HeadlessException;
+import java.io.*;
 import javax.swing.JOptionPane;
 
 public class LectorDeTexto extends Lector implements Leer {
@@ -19,7 +15,7 @@ public class LectorDeTexto extends Lector implements Leer {
     }
 
     @Override
-    public void leerArchivo(File archivo) throws FileNotFoundException, IOException {
+    public boolean leerArchivo(File archivo) throws FileNotFoundException, IOException {
         try {
             //Estas son las variables y objetos que serviran para leer el fichero de entrada
             String linea;
@@ -33,7 +29,7 @@ public class LectorDeTexto extends Lector implements Leer {
                 campos = separarCampos(linea, "("); //obtenemos un array con los campos
                 if (contador == 0 && !campos[0].equals("tablero")) { //si el contador es 0 significa que es la primera linea del archivo y esta debe de ser uns intruccion "tablero" de lo contrario no se puede seguir leyendo
                     JOptionPane.showMessageDialog(null, "Archivo de texto invalido, primera linea debe indicar tamaño del tablero");
-                    break;
+                    return false;
                 } else if (contador == 0 && campos[0].equals("tablero")) { // si el contador es 0 entonces es la primera linea del archivo ademas se crea un nuevo objeto
                     tablero = new Tablero(Integer.valueOf(campos[1]), Integer.valueOf(campos[2]));
                     contador++;
@@ -41,18 +37,19 @@ public class LectorDeTexto extends Lector implements Leer {
                     construirRegistro(campos);
                     contador++;
                 }
-            }/*
+            }
+            /*
             if (registro != null) {
                 //registros.add(registro);
                 CargaMasiva.txtcontenedor.append(linea + "\n");
             } else {
                 CargaMasiva.txterror.append(linea + "\n");
             }*/
-            contador++;
-
             fr.close();
-        } catch (Exception ex) {
+            return true;
+        } catch (HeadlessException | IOException | NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
+            return false;
         }
     }
 
@@ -64,7 +61,7 @@ public class LectorDeTexto extends Lector implements Leer {
                     miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla(true, false, false, false, false, false);
                     break;
                 case "tirardados":
-                     miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla(false, true, false, false, false, false);
+                    miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla(false, true, false, false, false, false);
                     break;
                 case "avanza":
                     miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla(false, false, true, false, false, false);
@@ -81,7 +78,7 @@ public class LectorDeTexto extends Lector implements Leer {
                 default:
                     break;
             }
-        } catch (Exception ex) {
+        } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
 

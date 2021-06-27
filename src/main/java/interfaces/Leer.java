@@ -1,10 +1,8 @@
 package interfaces;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 
 public interface Leer {
 
-    public void leerArchivo(File archivo) throws FileNotFoundException, IOException;
+    public boolean leerArchivo(File archivo) throws FileNotFoundException, IOException;
 }
