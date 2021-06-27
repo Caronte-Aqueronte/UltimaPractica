@@ -41,13 +41,13 @@ public class LectorDeTexto extends Lector implements Leer {
                     construirRegistro(campos);
                     contador++;
                 }
-            }
+            }/*
             if (registro != null) {
                 //registros.add(registro);
                 CargaMasiva.txtcontenedor.append(linea + "\n");
             } else {
                 CargaMasiva.txterror.append(linea + "\n");
-            }
+            }*/
             contador++;
 
             fr.close();
