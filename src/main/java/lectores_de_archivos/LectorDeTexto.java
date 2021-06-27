@@ -67,12 +67,16 @@ public class LectorDeTexto extends Lector implements Leer {
                      miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla(false, true, false, false, false, false);
                     break;
                 case "avanza":
+                    miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla(false, false, true, false, false, false);
                     break;
                 case "retorcede":
+                    miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla(false, false, false, true, false, false);
                     break;
                 case "subida":
+                    miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla(false, false, false, false, true, false);
                     break;
                 case "bajada":
+                    miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla(false, false, false, false, false, true);
                     break;
                 default:
                     break;
