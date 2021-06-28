@@ -1,18 +1,17 @@
 package interfaces_gui;
 
-import java.util.ArrayList;
+import clases_para_tabla.Tabla;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import jugador.Jugador;
 import principal.Principal;
 
 public class IngresoDeJugadores extends javax.swing.JDialog {
 
-    //este sera el modelo que tomara nuetra jtabble cada que se cree un nuevo jugador
-    private DefaultTableModel modelo = new DefaultTableModel();
+    //creamos este objeto para poder manipular nuestra tabla
+    private Tabla tabla = new Tabla();
 
     /**
      * Este es el contructor
+     *
      *
      * @param parent
      * @param modal
@@ -21,51 +20,7 @@ public class IngresoDeJugadores extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         //atomaticamnete cargamos la tabla
-        cargarTabla();
-    }
-
-    //Este metodo carga la tabla anyadiendo coliumnas y filas traidas del principal
-    public void cargarTabla() {
-        //borramos la tabla
-        borrarTabla();
-        //agramamos la columnas
-        ArrayList<Object> nombrecolumna = new ArrayList<>();
-        nombrecolumna.add("Id");
-        nombrecolumna.add("Nombre");
-        nombrecolumna.add("Apellido");
-        nombrecolumna.add("Partidas jugadas");
-        nombrecolumna.add("Partidas ganadas");
-        nombrecolumna.add("Partidas perdidas");
-        //
-        //agregamos las columnas
-        for (Object objeto : nombrecolumna) {
-            modelo.addColumn(objeto);
-        }
-        //le damos a la tabla el modelo
-        dgvJugadores.setModel(modelo);
-        //regorremos el array que es estatico
-        for (Jugador item : Principal.jugadores.getJugadores()) {
-            //cargamos cada parametro del objeto jugador que esta en la iteracion
-            String id = Integer.toString(item.getId());
-            String nombre = item.getNombre();
-            String apellido = item.getApellido();
-            String partidasJugadas = Integer.toString(item.getPartidasJugadas());
-            String partidasGanadas = Integer.toString(item.getPartidasGanadas());
-            String partidasPerdias = Integer.toString(item.getPartidasPerdidas());
-            //creamos un array en orden segun las columnas
-            String[] campos = new String[]{id, nombre, apellido, partidasJugadas, partidasGanadas, partidasPerdias};
-            //anyadimos la nueva fila de paramtros al modelo
-            modelo.addRow(campos);
-        }
-        //cargamos el modelo
-        dgvJugadores.setModel(modelo);
-    }
-
-    //Este metodo crea un nuevo table model y lo iguala al gloval para que se resetee
-    public void borrarTabla() {
-        DefaultTableModel modelo2 = new DefaultTableModel();
-        modelo = modelo2;
-        dgvJugadores.setModel(modelo);
+        tabla.cargarTablaDeJugadores(dgvJugadores);
     }
 
     @SuppressWarnings("unchecked")
@@ -163,10 +118,9 @@ public class IngresoDeJugadores extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (!txtnombre.getText().equals("") && !txtapellido.getText().equals("")) {
             try {
-                System.out.println(txtapellido.getText());
                 Principal.jugadores.ingresarJugadorNuevo(txtnombre.getText(), txtapellido.getText());
                 JOptionPane.showMessageDialog(null, "Jugador agregado con exito");
-                cargarTabla();
+                tabla.cargarTablaDeJugadores(dgvJugadores);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Error al ingresar jugador nuevo");
             }

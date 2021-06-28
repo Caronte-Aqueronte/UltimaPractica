@@ -1,9 +1,55 @@
 package interfaces_gui;
 
+import clases_para_tabla.Tabla;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 public class ElegirJugadores extends javax.swing.JFrame {
+
+    private Tabla tabla = new Tabla();
 
     public ElegirJugadores() {
         initComponents();
+        tabla.cargarTablaDeJugadores(dgvJugadores);
+        llenarClumnasTablaJUgadoresListos();
+    }
+    //este sera el modelo que tomara nuetra jtabble cada que se cree un nuevo jugador
+    DefaultTableModel modelo = new DefaultTableModel() {
+        //este sera el modelo que tomara nuetra jtabble cada que se cree un nuevo jugador
+        DefaultTableModel modelo = new DefaultTableModel() {
+            /**
+             * este metodo hace que la tabla no sea editable por el usuario
+             *
+             * @param filas
+             * @param columnas
+             * @return
+             */
+            @Override
+            public boolean isCellEditable(int filas, int columnas) {
+                return false;
+            }
+        };
+    };
+
+    public void llenarClumnasTablaJUgadoresListos() {
+
+        //agramamos la columnas
+        ArrayList<Object> nombrecolumna = new ArrayList<>();
+        nombrecolumna.add("Id");
+        nombrecolumna.add("Nombre");
+        nombrecolumna.add("Apellido");
+        nombrecolumna.add("Partidas jugadas");
+        nombrecolumna.add("Partidas ganadas");
+        nombrecolumna.add("Partidas perdidas");
+        //
+        //agregamos las columnas
+        for (Object objeto : nombrecolumna) {
+            modelo.addColumn(objeto);
+        }
+        //le damos a la tabla el modelo
+        dgvJugadoresListos.setModel(modelo);
     }
 
     @SuppressWarnings("unchecked")
@@ -35,7 +81,20 @@ public class ElegirJugadores extends javax.swing.JFrame {
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        dgvJugadores.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dgvJugadoresMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(dgvJugadores);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 350, 240));
@@ -58,12 +117,16 @@ public class ElegirJugadores extends javax.swing.JFrame {
         btnPasar.setBackground(new java.awt.Color(255, 255, 255));
         btnPasar.setFont(new java.awt.Font("Verdana", 0, 24)); // NOI18N
         btnPasar.setText("Pasar");
+        btnPasar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btnPasar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel1.add(btnPasar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 350, 190, 50));
 
         btnJugar.setBackground(new java.awt.Color(255, 255, 255));
         btnJugar.setFont(new java.awt.Font("Verdana", 0, 24)); // NOI18N
         btnJugar.setText("Jugar");
-        jPanel1.add(btnJugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 470, 270, 80));
+        btnJugar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btnJugar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel1.add(btnJugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 450, 270, 80));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -91,7 +154,29 @@ public class ElegirJugadores extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void dgvJugadoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dgvJugadoresMouseClicked
+        int filaSeleccionada = dgvJugadores.getSelectedRow();
+        if (filaSeleccionada >= 0) {
+            if (dgvJugadoresListos.getRowCount() < 6) {
+                String[] datos = new String[6];
+                datos[0] = dgvJugadores.getValueAt(filaSeleccionada, 0).toString();
+                datos[1] = dgvJugadores.getValueAt(filaSeleccionada, 1).toString();
+                datos[2] = dgvJugadores.getValueAt(filaSeleccionada, 2).toString();
+                datos[3] = dgvJugadores.getValueAt(filaSeleccionada, 3).toString();
+                datos[4] = dgvJugadores.getValueAt(filaSeleccionada, 4).toString();
+                datos[5] = dgvJugadores.getValueAt(filaSeleccionada, 5).toString();
+                modelo.addRow(datos);
+                tabla.borrarTabla(dgvJugadoresListos);
+                dgvJugadoresListos.setModel(modelo);
+                dgvJugadores.removeRowSelectionInterval(filaSeleccionada, (filaSeleccionada+1));
+            } else {
+                JOptionPane.showMessageDialog(null, "Limite de jugadores alcanzado");
+            }
+        }
+    }//GEN-LAST:event_dgvJugadoresMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
