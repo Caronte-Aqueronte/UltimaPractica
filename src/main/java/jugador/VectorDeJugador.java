@@ -22,7 +22,7 @@ public class VectorDeJugador {
         File file; //creamos el archivo
         FileOutputStream fileOutputStream; // vemos los out pusts necesarios
         ObjectOutputStream objectOutputStream;
-        file = new File("datosdelosjugadore.bin"); //le ponemos nombre al archivo
+        file = new File("datosdelosjugadores.bin"); //le ponemos nombre al archivo
         fileOutputStream = new FileOutputStream(file); //escribims el archivo
         objectOutputStream = new ObjectOutputStream(fileOutputStream); //preparamos para escribir el objeto
         objectOutputStream.writeObject(jugador); //escribirmos el objeto

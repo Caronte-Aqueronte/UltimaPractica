@@ -14,7 +14,8 @@ public class LectorBinario implements Leer {
     }
 
     /**
-     *Este metodo lee el archivo, se ejecuta cada vez que se abre el programa
+     * Este metodo lee el archivo, se ejecuta cada vez que se abre el programa
+     *
      * @param file
      * @return
      * @throws FileNotFoundException
@@ -22,15 +23,16 @@ public class LectorBinario implements Leer {
      */
     @Override
     public boolean leerArchivo(File file) throws FileNotFoundException, IOException {
-        FileInputStream fileInputStream = new FileInputStream(file);
-        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-        while (true) {
-            try {
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            while (true) {
                 Object objeto = objectInputStream.readObject();
                 jugadores.ingresarJugadorConRegistro((Jugador) objeto);
-            } catch (ClassNotFoundException ex) {
-
             }
+        } catch (Exception ex) {
+
         }
+        return false;
     }
 }

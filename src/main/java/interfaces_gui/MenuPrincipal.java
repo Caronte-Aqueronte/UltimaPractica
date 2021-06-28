@@ -8,7 +8,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     //constructor
     public MenuPrincipal() throws IOException {
-        initComponents();
+       initComponents();
        LectorBinario lectorBinario = new LectorBinario(Principal.jugadores, Principal.file);
     }
 

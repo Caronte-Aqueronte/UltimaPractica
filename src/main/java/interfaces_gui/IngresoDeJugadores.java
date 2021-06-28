@@ -1,9 +1,6 @@
 package interfaces_gui;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import jugador.Jugador;
@@ -16,14 +13,39 @@ public class IngresoDeJugadores extends javax.swing.JDialog {
     public IngresoDeJugadores(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        cargarTabla();
     }
 
     public void cargarTabla() {
-        for(Jugador item: Principal.jugadores.getJugadores()){
-            Object [] jugador = item.toObject();
-            modelo.addRow(jugador);
+        borrarTabla();
+        ArrayList<Object> nombrecolumna = new ArrayList<>();
+        nombrecolumna.add("Id");
+        nombrecolumna.add("Nombre");
+        nombrecolumna.add("Apellido");
+        nombrecolumna.add("Partidas jugadas");
+        nombrecolumna.add("Partidas ganadas");
+        nombrecolumna.add("Partidas perdidas");
+        for (Object objeto : nombrecolumna) {
+            modelo.addColumn(objeto);
         }
-        this.dgvJugadores.setModel(modelo);
+        dgvJugadores.setModel(modelo);
+        for (Jugador item : Principal.jugadores.getJugadores()) {
+            String id = Integer.toString(item.getId());
+            String nombre = item.getNombre();
+            String apellido = item.getApellido();
+            String partidasJugadas = Integer.toString(item.getPartidasJugadas());
+            String partidasGanadas = Integer.toString(item.getPartidasGanadas());
+            String partidasPerdias = Integer.toString(item.getPartidasPerdidas());
+            String[] campos = new String[]{id, nombre, apellido, partidasJugadas, partidasGanadas, partidasPerdias};
+            modelo.addRow(campos);
+        }
+        dgvJugadores.setModel(modelo);
+    }
+
+    public void borrarTabla() {
+        DefaultTableModel modelo2 = new DefaultTableModel();
+        modelo = modelo2;
+        dgvJugadores.setModel(modelo);
     }
 
     @SuppressWarnings("unchecked")
@@ -114,14 +136,16 @@ public class IngresoDeJugadores extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if(!txtnombre.getText().equals("") && !txtapellido.getText().equals("")){
+        if (!txtnombre.getText().equals("") && !txtapellido.getText().equals("")) {
             try {
                 System.out.println(txtapellido.getText());
                 Principal.jugadores.ingresarJugadorNuevo(txtnombre.getText(), txtapellido.getText());
+                JOptionPane.showMessageDialog(null, "Jugador agregado con exito");
+                cargarTabla();
             } catch (Exception ex) {
-                System.out.println("Error al ingresar jugador");
+                JOptionPane.showMessageDialog(null, "Error al ingresar jugador nuevo");
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Parametros vacios");
         }
     }//GEN-LAST:event_jButton1ActionPerformed

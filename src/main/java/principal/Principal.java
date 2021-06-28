@@ -7,7 +7,7 @@ import jugador.VectorDeJugador;
 
 public class Principal {
 
-    public static final File file = new File("datosdelosjugadore.bin");
+    public static final File file = new File("datosdelosjugadores.bin");
     public static VectorDeJugador jugadores = new VectorDeJugador();
 
     public static void main(String[] args) throws IOException {
