@@ -2,6 +2,7 @@ package jugador;
 
 import java.io.*;
 import java.util.ArrayList;
+import principal.Principal;
 
 public class VectorDeJugador {
 
@@ -10,7 +11,7 @@ public class VectorDeJugador {
     public void ingresarJugadorNuevo(String nombre, String apellido) throws IOException {
         Jugador jugador = new Jugador((jugadores.size() + 1), nombre, apellido, 0, 0, 0);
         jugadores.add(jugador);
-        guardarDatosEnBinario(jugador);
+        guardarDatosEnBinario();
     }
 
    public void ingresarJugadorConRegistro(Jugador jugador) {
@@ -18,14 +19,16 @@ public class VectorDeJugador {
     }
 
     //este codio se ejecutara cada que se crea un nuevo jugador
-    public void guardarDatosEnBinario(Jugador jugador) throws FileNotFoundException, IOException {
-        File file; //creamos el archivo
+    public void guardarDatosEnBinario() throws FileNotFoundException, IOException {
+        File file = Principal.file; //creamos el archivo
         FileOutputStream fileOutputStream; // vemos los out pusts necesarios
         ObjectOutputStream objectOutputStream;
-        file = new File("datosdelosjugadores.bin"); //le ponemos nombre al archivo
         fileOutputStream = new FileOutputStream(file); //escribims el archivo
         objectOutputStream = new ObjectOutputStream(fileOutputStream); //preparamos para escribir el objeto
-        objectOutputStream.writeObject(jugador); //escribirmos el objeto
+        //recorremos el array
+        for(Jugador item: jugadores){
+            objectOutputStream.writeObject(item); //escribirmos el objeto
+        }
     }
 
     public ArrayList<Jugador> getJugadores() {
