@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import jugador.Jugador;
 
 public class ElegirJugadores extends javax.swing.JFrame {
 
@@ -59,7 +60,6 @@ public class ElegirJugadores extends javax.swing.JFrame {
         dgvJugadores = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         dgvJugadoresListos = new javax.swing.JTable();
-        btnPasar = new javax.swing.JButton();
         btnJugar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -108,23 +108,26 @@ public class ElegirJugadores extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        dgvJugadoresListos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dgvJugadoresListosMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(dgvJugadoresListos);
 
         jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 80, 350, 240));
-
-        btnPasar.setBackground(new java.awt.Color(255, 255, 255));
-        btnPasar.setFont(new java.awt.Font("Verdana", 0, 24)); // NOI18N
-        btnPasar.setText("Pasar");
-        btnPasar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        btnPasar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel1.add(btnPasar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 350, 190, 50));
 
         btnJugar.setBackground(new java.awt.Color(255, 255, 255));
         btnJugar.setFont(new java.awt.Font("Verdana", 0, 24)); // NOI18N
         btnJugar.setText("Jugar");
         btnJugar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         btnJugar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel1.add(btnJugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 450, 270, 80));
+        btnJugar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnJugarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnJugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 380, 270, 80));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -154,11 +157,15 @@ public class ElegirJugadores extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Este algoritmo pasa la fila elegida a la tabla de jugadores listos
+     *
+     * @param evt
+     */
     private void dgvJugadoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dgvJugadoresMouseClicked
         int filaSeleccionada = dgvJugadores.getSelectedRow();
         if (filaSeleccionada >= 0) {
-            if (dgvJugadoresListos.getRowCount() < 6) {
+            if (dgvJugadoresListos.getRowCount() != 6) {
                 //obtenemos todos los valores segun la tabla de jugadores
                 String[] datos = new String[6];
                 datos[0] = dgvJugadores.getValueAt(filaSeleccionada, 0).toString();
@@ -185,11 +192,66 @@ public class ElegirJugadores extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_dgvJugadoresMouseClicked
+    /**
+     * Este algoritmo pasa la fila seleccionada a la tabla jugadores ingresados
+     * y sirve paor si el jugador decide jugar con menos personas o cambiar a
+     * alguien
+     *
+     * @param evt
+     */
+    private void dgvJugadoresListosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dgvJugadoresListosMouseClicked
+        int filaSeleccionada = dgvJugadoresListos.getSelectedRow();
+        if (filaSeleccionada >= 0) {
+            //obtenemos todos los valores segun la tabla de jugadores
+            String[] datos = new String[6];
+            datos[0] = dgvJugadoresListos.getValueAt(filaSeleccionada, 0).toString();
+            datos[1] = dgvJugadoresListos.getValueAt(filaSeleccionada, 1).toString();
+            datos[2] = dgvJugadoresListos.getValueAt(filaSeleccionada, 2).toString();
+            datos[3] = dgvJugadoresListos.getValueAt(filaSeleccionada, 3).toString();
+            datos[4] = dgvJugadoresListos.getValueAt(filaSeleccionada, 4).toString();
+            datos[5] = dgvJugadoresListos.getValueAt(filaSeleccionada, 5).toString();
+            //agregamos la fila al modelo de tabla
+            modelo2.addRow(datos);
+            //borramos la tabla jugadores listos
+            tabla.borrarTabla(dgvJugadores);
+            //le damos el modelo nuevo a la tabla
+            dgvJugadores.setModel(modelo2);
+            //eliminamos la fila del modelo de la tabla jugadores ingresados
+            modelo.removeRow(filaSeleccionada);
+            //eliminamos la tabla
+            tabla.borrarTabla(dgvJugadoresListos);
+            //le damos el nuevo modelo
+            dgvJugadoresListos.setModel(modelo);
+
+        }
+    }//GEN-LAST:event_dgvJugadoresListosMouseClicked
+
+    private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
+        if (dgvJugadoresListos.getRowCount() > 1) {
+            ArrayList<Jugador> jugadoresParaJugar = new ArrayList<Jugador>();
+            for (int x = 0; x < dgvJugadoresListos.getRowCount(); x++) {
+                //obtenemos todos los valores segun la tabla de jugadores
+                String[] datos = new String[6];
+                datos[0] = dgvJugadoresListos.getValueAt(x, 0).toString();
+                datos[1] = dgvJugadoresListos.getValueAt(x, 1).toString();
+                datos[2] = dgvJugadoresListos.getValueAt(x, 2).toString();
+                datos[3] = dgvJugadoresListos.getValueAt(x, 3).toString();
+                datos[4] = dgvJugadoresListos.getValueAt(x, 4).toString();
+                datos[5] = dgvJugadoresListos.getValueAt(x, 5).toString();
+                //creamos un nuevo objeto
+                jugadoresParaJugar.add(new Jugador(Integer.valueOf(datos[0]), datos[1], datos[2], Integer.valueOf(datos[3]), Integer.valueOf(datos[4]), Integer.valueOf(datos[5])));
+                BuscadorDeArchivo buscado = new BuscadorDeArchivo(jugadoresParaJugar);
+                buscado.setVisible(true);
+                this.dispose();;
+            }
+        } else {
+            JOptionPane.showConfirmDialog(null, "Jugadores insuficientes");
+        }
+    }//GEN-LAST:event_btnJugarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnJugar;
-    private javax.swing.JButton btnPasar;
     private javax.swing.JTable dgvJugadores;
     private javax.swing.JTable dgvJugadoresListos;
     private javax.swing.JLabel jLabel1;

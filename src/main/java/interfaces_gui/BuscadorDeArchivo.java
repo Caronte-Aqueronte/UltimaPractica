@@ -2,16 +2,19 @@ package interfaces_gui;
 
 import clases_para_tablero.Tablero;
 import java.io.*;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.filechooser.*;
+import jugador.Jugador;
 import lectores_de_archivos.LectorDeTexto;
 
 public class BuscadorDeArchivo extends javax.swing.JFrame {
 
-    Tablero tablero;
-
-    public BuscadorDeArchivo() {
+    private Tablero tablero;
+    private ArrayList<Jugador> jugadores; 
+    public BuscadorDeArchivo(ArrayList<Jugador> jugadores) {
         initComponents();
+        this.jugadores = jugadores;
     }
 
     @SuppressWarnings("unchecked")
@@ -99,7 +102,8 @@ public class BuscadorDeArchivo extends javax.swing.JFrame {
             try {
                 boolean leerArchivo = lectorDeTexto.leerArchivo(fichero);
                 if (leerArchivo == true) {
-
+                    //creamos la partida
+                    
                 } else {
                     MenuPrincipal menuPrincipal = new MenuPrincipal();
                     menuPrincipal.setVisible(true);
