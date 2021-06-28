@@ -12,6 +12,13 @@ public class LectorDeTexto extends Lector implements Leer {
     private JTextArea panelAsiertos;
     private JTextArea panelErrores;
 
+    /**
+     * Nesecitamos estos fatos para poder leer el tablero que se ingresara
+     *
+     * @param tablero
+     * @param panelAsiertos
+     * @param panelErrores
+     */
     public LectorDeTexto(Tablero tablero, JTextArea panelAsiertos, JTextArea panelErrores) {
         this.tablero = tablero;
         this.panelAsiertos = panelAsiertos;
@@ -42,13 +49,12 @@ public class LectorDeTexto extends Lector implements Leer {
                     contador++;
                 } else {
                     registro = construirRegistro(campos);
-                    if (registro == true) {
-                        //registros.add(registro);
+                    if (registro == true) {//si se concreto la entrda corrctamente entonces agregamos al panel de entradas correctas
                         panelAsiertos.append(linea + "\n");
-                    } else {
+                    } else {//sino entonces agregamos a los incorrectos
                         panelErrores.append(linea + "\n");
                     }
-                    contador++;
+                    contador++; //este contador nos sirve para saber cual es la primeralineaF
                 }
             }
 
@@ -57,9 +63,10 @@ public class LectorDeTexto extends Lector implements Leer {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Error en la entrada");
         }
-         return false;
+        return false;
     }
 
+    //depende de la instruccion se dara un caso y se reescribira la casilla con su nuevo comportamiento
     public boolean construirRegistro(String[] campos) {
         try {
             Casilla[][] miTablero = tablero.getMiTablero();

@@ -9,6 +9,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     //constructor
     public MenuPrincipal() throws IOException {
        initComponents();
+       //leemos el fichero binario que es statico para usarlo en todo el programa
        LectorBinario lectorBinario = new LectorBinario(Principal.jugadores, Principal.file);
     }
 
@@ -74,13 +75,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    //abrimos el form que correspde 
     private void btnNuevaPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaPartidaActionPerformed
         BuscadorDeArchivo buscador = new BuscadorDeArchivo();
         buscador.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnNuevaPartidaActionPerformed
-
+    //abrimos el form que correspde 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         IngresoDeJugadores ingreso = new IngresoDeJugadores(this, true);
         ingreso.setVisible(true);

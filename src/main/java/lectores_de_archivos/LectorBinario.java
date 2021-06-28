@@ -24,11 +24,11 @@ public class LectorBinario implements Leer {
     @Override
     public boolean leerArchivo(File file) throws FileNotFoundException, IOException {
         try {
-            FileInputStream fileInputStream = new FileInputStream(file);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            while (true) {
-                Object objeto = objectInputStream.readObject();
-                jugadores.ingresarJugadorConRegistro((Jugador) objeto);
+            FileInputStream fileInputStream = new FileInputStream(file); //mandamos el path que es el archivo binario
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream); //preparamos para un blujo de salida
+            while (true) {//este cliclo NO es infinito pues lee hasta el final del archivo donde es false y se convierte en false
+                Object objeto = objectInputStream.readObject(); //creamos un nuevo objeto a partir de nuestra dta
+                jugadores.ingresarJugadorConRegistro((Jugador) objeto); //ingresamos el objeto guardado al array
             }
         } catch (Exception ex) {
 

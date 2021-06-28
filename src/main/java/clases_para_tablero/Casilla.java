@@ -7,7 +7,15 @@ public class Casilla {
     private boolean retrocede;
     private boolean subida;
     private boolean bajada;
-
+    /**
+     * Contructor de casilla cada boolean representa el accionar de cada casilla
+     * @param pierdeTurno
+     * @param tirarDados
+     * @param avanza
+     * @param retrocede
+     * @param subida
+     * @param bajada 
+     */
     public Casilla(boolean pierdeTurno, boolean tirarDados, boolean avanza, boolean retrocede, boolean subida, boolean bajada) {
         this.pierdeTurno = pierdeTurno;
         this.tirarDados = tirarDados;
@@ -16,7 +24,7 @@ public class Casilla {
         this.subida = subida;
         this.bajada = bajada;
     }
-
+    //Getters y setters
     public boolean isPierdeTurno() {
         return pierdeTurno;
     }

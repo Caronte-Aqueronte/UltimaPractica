@@ -11,6 +11,16 @@ public class Jugador implements Serializable {
     int partidasGanadas;
     int partidasPerdidas;
 
+    /**
+     * Este es el contructor que tiene que tener cada jugador nuevo
+     *
+     * @param id
+     * @param nombre
+     * @param Apellido
+     * @param partidasJugadas
+     * @param partidasGanadas
+     * @param partidasPerdidas
+     */
     public Jugador(int id, String nombre, String Apellido, int partidasJugadas, int partidasGanadas, int partidasPerdidas) {
         this.id = id;
         this.nombre = nombre;
@@ -20,6 +30,7 @@ public class Jugador implements Serializable {
         this.partidasPerdidas = partidasPerdidas;
     }
 
+    //Setters y getters
     public int getId() {
         return id;
     }
@@ -72,5 +83,5 @@ public class Jugador implements Serializable {
         Object[] aDevolver = {id, nombre, apellido, partidasJugadas, partidasGanadas, partidasPerdidas};
         return aDevolver;
     }
-
+//
 }

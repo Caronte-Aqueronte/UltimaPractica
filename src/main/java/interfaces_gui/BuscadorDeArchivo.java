@@ -1,13 +1,9 @@
 package interfaces_gui;
 
 import clases_para_tablero.Tablero;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.*;
+import javax.swing.*;
+import javax.swing.filechooser.*;
 import lectores_de_archivos.LectorDeTexto;
 
 public class BuscadorDeArchivo extends javax.swing.JFrame {
@@ -109,8 +105,8 @@ public class BuscadorDeArchivo extends javax.swing.JFrame {
                     menuPrincipal.setVisible(true);
                     this.dispose();
                 }
-            } catch (IOException ex) {
-                Logger.getLogger(BuscadorDeArchivo.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+               
             }
         }
     }//GEN-LAST:event_btnBucarActionPerformed
