@@ -7,6 +7,20 @@ import jugador.Jugador;
 import principal.Principal;
 
 public class Tabla {
+//este modelo de tabla nos va a servir para la eleccion de jugadores y la dinamica de pasar campos a otra tbla
+    private DefaultTableModel modeloAux = new DefaultTableModel() {
+        /**
+         * este metodo hace que la tabla no sea editable por el usuario
+         *
+         * @param filas
+         * @param columnas
+         * @return
+         */
+        @Override
+        public boolean isCellEditable(int filas, int columnas) {
+            return false;
+        }
+    };
 
     //Este metodo carga la tabla anyadiendo coliumnas y filas traidas del principal
     public void cargarTablaDeJugadores(JTable tabla) {
@@ -24,6 +38,7 @@ public class Tabla {
                 return false;
             }
         };
+
         //borramos la tabla
         borrarTabla(tabla);
         //agramamos la columnas
@@ -38,8 +53,10 @@ public class Tabla {
         //agregamos las columnas
         for (Object objeto : nombrecolumna) {
             modelo.addColumn(objeto);
+            modeloAux.addColumn(objeto);
         }
         //le damos a la tabla el modelo
+
         tabla.setModel(modelo);
         //regorremos el array que es estatico
         for (Jugador item : Principal.jugadores.getJugadores()) {
@@ -54,6 +71,7 @@ public class Tabla {
             String[] campos = new String[]{id, nombre, apellido, partidasJugadas, partidasGanadas, partidasPerdias};
             //anyadimos la nueva fila de paramtros al modelo
             modelo.addRow(campos);
+            modeloAux.addRow(campos);
         }
         //cargamos el modelo
         tabla.setModel(modelo);
@@ -64,4 +82,9 @@ public class Tabla {
         DefaultTableModel modelo2 = new DefaultTableModel();
         tabla.setModel(modelo2);
     }
+
+    public DefaultTableModel getModeloAux() {
+        return modeloAux;
+    }
+
 }

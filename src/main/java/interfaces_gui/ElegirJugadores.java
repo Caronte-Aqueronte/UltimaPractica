@@ -9,29 +9,27 @@ import javax.swing.table.TableModel;
 public class ElegirJugadores extends javax.swing.JFrame {
 
     private Tabla tabla = new Tabla();
+    //este sera el modelo que tomara nuetra jtabble cada que se cree un nuevo jugador
+    private DefaultTableModel modelo = new DefaultTableModel() {
+        /**
+         * este metodo hace que la tabla no sea editable por el usuario
+         *
+         * @param filas
+         * @param columnas
+         * @return
+         */
+        @Override
+        public boolean isCellEditable(int filas, int columnas) {
+            return false;
+        }
+    };
+    private DefaultTableModel modelo2 = tabla.getModeloAux();
 
     public ElegirJugadores() {
         initComponents();
         tabla.cargarTablaDeJugadores(dgvJugadores);
         llenarClumnasTablaJUgadoresListos();
     }
-    //este sera el modelo que tomara nuetra jtabble cada que se cree un nuevo jugador
-    DefaultTableModel modelo = new DefaultTableModel() {
-        //este sera el modelo que tomara nuetra jtabble cada que se cree un nuevo jugador
-        DefaultTableModel modelo = new DefaultTableModel() {
-            /**
-             * este metodo hace que la tabla no sea editable por el usuario
-             *
-             * @param filas
-             * @param columnas
-             * @return
-             */
-            @Override
-            public boolean isCellEditable(int filas, int columnas) {
-                return false;
-            }
-        };
-    };
 
     public void llenarClumnasTablaJUgadoresListos() {
 
@@ -161,6 +159,7 @@ public class ElegirJugadores extends javax.swing.JFrame {
         int filaSeleccionada = dgvJugadores.getSelectedRow();
         if (filaSeleccionada >= 0) {
             if (dgvJugadoresListos.getRowCount() < 6) {
+                //obtenemos todos los valores segun la tabla de jugadores
                 String[] datos = new String[6];
                 datos[0] = dgvJugadores.getValueAt(filaSeleccionada, 0).toString();
                 datos[1] = dgvJugadores.getValueAt(filaSeleccionada, 1).toString();
@@ -168,10 +167,19 @@ public class ElegirJugadores extends javax.swing.JFrame {
                 datos[3] = dgvJugadores.getValueAt(filaSeleccionada, 3).toString();
                 datos[4] = dgvJugadores.getValueAt(filaSeleccionada, 4).toString();
                 datos[5] = dgvJugadores.getValueAt(filaSeleccionada, 5).toString();
+                //agregamos la fila al modelo de tabla
                 modelo.addRow(datos);
+                //borramos la tabla jugadores listos
                 tabla.borrarTabla(dgvJugadoresListos);
+                //le damos el modelo nuevo a la tabla
                 dgvJugadoresListos.setModel(modelo);
-                dgvJugadores.removeRowSelectionInterval(filaSeleccionada, (filaSeleccionada+1));
+                //eliminamos la fila del modelo de la tabla jugadores ingresados
+                modelo2.removeRow(filaSeleccionada);
+                //eliminamos la tabla
+                tabla.borrarTabla(dgvJugadores);
+                //le damos el nuevo modelo
+                dgvJugadores.setModel(modelo2);
+
             } else {
                 JOptionPane.showMessageDialog(null, "Limite de jugadores alcanzado");
             }
