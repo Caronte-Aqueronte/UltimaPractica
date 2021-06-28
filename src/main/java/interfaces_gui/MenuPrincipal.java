@@ -39,6 +39,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         btnAgregar.setForeground(new java.awt.Color(51, 51, 51));
         btnAgregar.setText("Agregar jugador nuevo");
         btnAgregar.setFocusable(false);
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 180, 290, 61));
 
         jLabel1.setFont(new java.awt.Font("Calibri", 3, 48)); // NOI18N
@@ -70,6 +75,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         buscador.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnNuevaPartidaActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        IngresoDeJugadores ingreso = new IngresoDeJugadores(this, true);
+        ingreso.setVisible(true);
+    }//GEN-LAST:event_btnAgregarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
