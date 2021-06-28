@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class VectorDeJugador {
 
-    ArrayList<Jugador> jugadores = new ArrayList<>();
+    private ArrayList<Jugador> jugadores = new ArrayList<>();
 
     public void ingresarJugadorNuevo(String nombre, String apellido) throws IOException {
         Jugador jugador = new Jugador((jugadores.size() + 1), nombre, apellido, 0, 0, 0);
@@ -13,10 +13,9 @@ public class VectorDeJugador {
         guardarDatosEnBinario(jugador);
     }
 
-   /* public void ingresarJugadorConRegistro(int id, String nombre, String apellido, int partidasJugadas, int partidasGanadas, int partidasPerdias) {
-        jugadores.add(new Jugador(id, nombre, apellido, partidasJugadas, partidasGanadas, partidasPerdias));
-        contadorId++;
-    }*/
+   public void ingresarJugadorConRegistro(Jugador jugador) {
+        jugadores.add(jugador);
+    }
 
     //este codio se ejecutara cada que se crea un nuevo jugador
     public void guardarDatosEnBinario(Jugador jugador) throws FileNotFoundException, IOException {
@@ -28,4 +27,9 @@ public class VectorDeJugador {
         objectOutputStream = new ObjectOutputStream(fileOutputStream); //preparamos para escribir el objeto
         objectOutputStream.writeObject(jugador); //escribirmos el objeto
     }
+
+    public ArrayList<Jugador> getJugadores() {
+        return jugadores;
+    }
+    
 }

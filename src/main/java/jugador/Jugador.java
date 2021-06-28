@@ -3,9 +3,10 @@ package jugador;
 import java.io.Serializable;
 
 public class Jugador implements Serializable {
+
     int id;
     String nombre;
-    String Apellido;
+    String apellido;
     int partidasJugadas;
     int partidasGanadas;
     int partidasPerdidas;
@@ -13,7 +14,7 @@ public class Jugador implements Serializable {
     public Jugador(int id, String nombre, String Apellido, int partidasJugadas, int partidasGanadas, int partidasPerdidas) {
         this.id = id;
         this.nombre = nombre;
-        this.Apellido = Apellido;
+        this.apellido = Apellido;
         this.partidasJugadas = partidasJugadas;
         this.partidasGanadas = partidasGanadas;
         this.partidasPerdidas = partidasPerdidas;
@@ -36,11 +37,11 @@ public class Jugador implements Serializable {
     }
 
     public String getApellido() {
-        return Apellido;
+        return apellido;
     }
 
     public void setApellido(String Apellido) {
-        this.Apellido = Apellido;
+        this.apellido = Apellido;
     }
 
     public int getPartidasJugadas() {
@@ -66,5 +67,10 @@ public class Jugador implements Serializable {
     public void setPartidasPerdidas(int partidasPerdidas) {
         this.partidasPerdidas = partidasPerdidas;
     }
-    
+
+    public Object[] toObject() {
+        Object[] aDevolver = {id, nombre, apellido, partidasJugadas, partidasGanadas, partidasPerdidas};
+        return aDevolver;
+    }
+
 }

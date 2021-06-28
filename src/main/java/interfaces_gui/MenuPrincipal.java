@@ -1,10 +1,15 @@
 package interfaces_gui;
 
+import java.io.IOException;
+import lectores_de_archivos.LectorBinario;
+import principal.Principal;
+
 public class MenuPrincipal extends javax.swing.JFrame {
+
     //constructor
-    public MenuPrincipal() {
+    public MenuPrincipal() throws IOException {
         initComponents();
-        
+       LectorBinario lectorBinario = new LectorBinario(Principal.jugadores, Principal.file);
     }
 
     @SuppressWarnings("unchecked")
