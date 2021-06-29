@@ -2,7 +2,9 @@ package clases_para_nueva_partida;
 
 import clases_para_tablero.Tablero;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -14,10 +16,12 @@ public class NuevaPartida extends javax.swing.JFrame {
     private ArrayList<Jugador> jugadores;
     private int espacioX;
     private int espacioY;
+
     /**
      * COnstructor
+     *
      * @param tablero
-     * @param jugadores 
+     * @param jugadores
      */
     public NuevaPartida(Tablero tablero, ArrayList<Jugador> jugadores) {
         initComponents();
@@ -25,6 +29,7 @@ public class NuevaPartida extends javax.swing.JFrame {
         this.jugadores = jugadores;
         generarTablero();
     }
+
     //este metodo crea el tablero tomano en cuenta el tamanyo de la matriz de casilla creadas en tablero
     public void generarTablero() {
         try {
@@ -42,6 +47,41 @@ public class NuevaPartida extends javax.swing.JFrame {
                     boton.setText(String.valueOf(contador));
                     boton.setSize(espacioX, espacioY);
                     //
+                    ImageIcon imagen;
+                    ImageIcon imagenEscalada;
+                    switch (tablero.getMiTablero()[x][y].getComportamiento()) {
+
+                        case "pierdeturno":
+                            imagen = new ImageIcon(getClass().getResource("/imagenes/pierdeturno.png"));
+                            imagenEscalada = new ImageIcon(imagen.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+                            boton.setIcon(imagenEscalada);
+                            break;
+                        case "tiradados":
+                            imagen = new ImageIcon(getClass().getResource("/imagenes/dados.png"));
+                            imagenEscalada = new ImageIcon(imagen.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+                            boton.setIcon(imagenEscalada);
+                            break;
+                        case "avanza":
+                            imagen = new ImageIcon(getClass().getResource("/imagenes/avanza.png"));
+                            imagenEscalada = new ImageIcon(imagen.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+                            boton.setIcon(imagenEscalada);
+                            break;
+                        case "retrocede":
+                            imagen = new ImageIcon(getClass().getResource("/imagenes/retrocede.png"));
+                            imagenEscalada = new ImageIcon(imagen.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+                            boton.setIcon(imagenEscalada);
+                            break;
+                        case "subida":
+                            imagen = new ImageIcon(getClass().getResource("/imagenes/subida.png"));
+                            imagenEscalada = new ImageIcon(imagen.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+                            boton.setIcon(imagenEscalada);
+                            break;
+                        case "bajada":
+                            imagen = new ImageIcon(getClass().getResource("/imagenes/bajada.png"));
+                            imagenEscalada = new ImageIcon(imagen.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+                            boton.setIcon(imagenEscalada);
+                            break;
+                    }
                     contenedor.add(boton);
                     actualizarTablero(contenedor);
                     contador++;

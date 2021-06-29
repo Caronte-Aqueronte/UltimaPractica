@@ -78,8 +78,8 @@ public class LectorDeTexto extends Lector implements Leer {
                 case "avanza":
                     miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla("avanza", Integer.valueOf(campos[3]));
                     return true;
-                case "retorcede":
-                    miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla("retorcede", Integer.valueOf(campos[3]));
+                case "retrocede":
+                    miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla("retrocede", Integer.valueOf(campos[3]));
                     return true;
                 case "subida":
                     miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla("subida", Integer.valueOf(campos[3]), Integer.valueOf(campos[4]));
