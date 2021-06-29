@@ -165,7 +165,7 @@ public class ElegirJugadores extends javax.swing.JFrame {
     private void dgvJugadoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dgvJugadoresMouseClicked
         int filaSeleccionada = dgvJugadores.getSelectedRow();
         if (filaSeleccionada >= 0) {
-            if (dgvJugadoresListos.getRowCount() != 6) {
+            if (dgvJugadoresListos.getRowCount() != 2) {
                 //obtenemos todos los valores segun la tabla de jugadores
                 String[] datos = new String[6];
                 datos[0] = dgvJugadores.getValueAt(filaSeleccionada, 0).toString();
