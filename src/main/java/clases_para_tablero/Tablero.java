@@ -3,12 +3,19 @@ package clases_para_tablero;
 public class Tablero {
 
     private Casilla[][] miTablero;
+    private int x;
+    private int y;
+
     /**
-     * Este contructor indica la cantidad de espacions que tendra el tablero, ademas llena el tablero por default
+     * Este contructor indica la cantidad de espacions que tendra el tablero,
+     * ademas llena el tablero por default
+     *
      * @param x
-     * @param y 
+     * @param y
      */
     public Tablero(int x, int y) {
+        this.x = x;
+        this.y = y;
         miTablero = new Casilla[x][y];
         llenarTableroDefault();
     }
@@ -25,9 +32,25 @@ public class Tablero {
             }
         }
     }
-    //gettr
+
+    //getters
     public Casilla[][] getMiTablero() {
         return miTablero;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setXY(int x, int y) {
+        this.x = x;
+        this.y = y;
+        miTablero = new Casilla[x][y];
+        llenarTableroDefault();
     }
 
 }

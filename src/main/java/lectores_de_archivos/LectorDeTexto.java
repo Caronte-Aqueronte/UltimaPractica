@@ -39,12 +39,11 @@ public class LectorDeTexto extends Lector implements Leer {
 
             while ((linea = br.readLine()) != null) { //se repetira hasta que lea la utima linea del archivo
                 campos = separarCampos(linea, "("); //obtenemos un array con los campos
-                System.out.println(Arrays.toString(campos));
                 if (contador == 0 && !campos[0].equals("tablero")) { //si el contador es 0 significa que es la primera linea del archivo y esta debe de ser uns intruccion "tablero" de lo contrario no se puede seguir leyendo
                     JOptionPane.showMessageDialog(null, "Archivo de texto invalido, primera linea debe indicar tamaño del tablero");
                     return false;
                 } else if (contador == 0 && campos[0].equals("tablero")) { // si el contador es 0 entonces es la primera linea del archivo ademas se crea un nuevo objeto
-                    tablero = new Tablero(Integer.valueOf(campos[1]), Integer.valueOf(campos[2]));
+                    tablero.setXY(Integer.valueOf(campos[1]), Integer.valueOf(campos[2]));
                     panelAsiertos.append(linea + "\n");
                     contador++;
                 } else {
@@ -96,4 +95,9 @@ public class LectorDeTexto extends Lector implements Leer {
             return false;
         }
     }
+
+    public Tablero getTablero() {
+        return tablero;
+    }
+    
 }

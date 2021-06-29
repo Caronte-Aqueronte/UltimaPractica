@@ -11,7 +11,7 @@ import lectores_de_archivos.LectorDeTexto;
 
 public class BuscadorDeArchivo extends javax.swing.JFrame {
 
-    private Tablero tablero;
+    public Tablero tablero = new Tablero(2,2);
     private ArrayList<Jugador> jugadores;
 
     public BuscadorDeArchivo(ArrayList<Jugador> jugadores) {
@@ -106,11 +106,9 @@ public class BuscadorDeArchivo extends javax.swing.JFrame {
             try {
                 boolean leerArchivo = lectorDeTexto.leerArchivo(fichero);
                 if (leerArchivo == true) {
-                    NuevaPartida nv = new NuevaPartida(tablero, jugadores);
-                    
+                    NuevaPartida nv = new NuevaPartida(tablero, jugadores); 
                     this.dispose();
-                    System.out.println("LLEgo");
-                     nv.setVisible(true);
+                    nv.setVisible(true);
                 } else {
                     MenuPrincipal menuPrincipal = new MenuPrincipal();
                     this.dispose();
