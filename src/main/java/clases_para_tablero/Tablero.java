@@ -28,7 +28,7 @@ public class Tablero {
     private void llenarTableroDefault() {
         for (int x = 0; x < miTablero.length; x++) {
             for (int y = 0; y < miTablero[x].length; y++) {
-                miTablero[x][y] = new Casilla(false, false, false, false, false, false);
+                miTablero[x][y] = new Casilla("nada");
             }
         }
     }

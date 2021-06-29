@@ -14,14 +14,18 @@ public class NuevaPartida extends javax.swing.JFrame {
     private ArrayList<Jugador> jugadores;
     private int espacioX;
     private int espacioY;
-
+    /**
+     * COnstructor
+     * @param tablero
+     * @param jugadores 
+     */
     public NuevaPartida(Tablero tablero, ArrayList<Jugador> jugadores) {
         initComponents();
         this.tablero = tablero;
         this.jugadores = jugadores;
         generarTablero();
     }
-
+    //este metodo crea el tablero tomano en cuenta el tamanyo de la matriz de casilla creadas en tablero
     public void generarTablero() {
         try {
             //este contador nos sirve para darle nombre al boton

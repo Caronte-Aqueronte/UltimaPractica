@@ -70,22 +70,22 @@ public class LectorDeTexto extends Lector implements Leer {
             Casilla[][] miTablero = tablero.getMiTablero();
             switch (campos[0]) {
                 case "pierdeturno":
-                    miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla(true, false, false, false, false, false);
+                    miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla("pierdeturno");
                     return true;
                 case "tirardados":
-                    miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla(false, true, false, false, false, false);
+                    miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla("tirardados");
                     return true;
                 case "avanza":
-                    miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla(false, false, true, false, false, false);
+                    miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla("avanza", Integer.valueOf(campos[3]));
                     return true;
                 case "retorcede":
-                    miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla(false, false, false, true, false, false);
+                    miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla("retorcede", Integer.valueOf(campos[3]));
                     return true;
                 case "subida":
-                    miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla(false, false, false, false, true, false);
+                    miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla("subida", Integer.valueOf(campos[3]), Integer.valueOf(campos[4]));
                     return true;
                 case "bajada":
-                    miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla(false, false, false, false, false, true);
+                    miTablero[Integer.valueOf(campos[1])][Integer.valueOf(campos[2])] = new Casilla("bajada", Integer.valueOf(campos[3]), Integer.valueOf(campos[4]));
                     return true;
                 default:
                     return false;
@@ -99,5 +99,5 @@ public class LectorDeTexto extends Lector implements Leer {
     public Tablero getTablero() {
         return tablero;
     }
-    
+
 }
