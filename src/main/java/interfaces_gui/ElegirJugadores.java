@@ -240,10 +240,10 @@ public class ElegirJugadores extends javax.swing.JFrame {
                 datos[5] = dgvJugadoresListos.getValueAt(x, 5).toString();
                 //creamos un nuevo objeto
                 jugadoresParaJugar.add(new Jugador(Integer.valueOf(datos[0]), datos[1], datos[2], Integer.valueOf(datos[3]), Integer.valueOf(datos[4]), Integer.valueOf(datos[5])));
-                BuscadorDeArchivo buscado = new BuscadorDeArchivo(jugadoresParaJugar);
-                buscado.setVisible(true);
                 this.dispose();;
             }
+            BuscadorDeArchivo buscado = new BuscadorDeArchivo(jugadoresParaJugar);
+            buscado.setVisible(true);
         } else {
             JOptionPane.showConfirmDialog(null, "Jugadores insuficientes");
         }

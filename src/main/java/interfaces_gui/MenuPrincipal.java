@@ -1,6 +1,7 @@
 package interfaces_gui;
 
 import java.io.IOException;
+import jugador.VectorDeJugador;
 import lectores_de_archivos.LectorBinario;
 import principal.Principal;
 
@@ -10,6 +11,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     public MenuPrincipal() throws IOException {
        initComponents();
        //leemos el fichero binario que es statico para usarlo en todo el programa
+       Principal.jugadores = new VectorDeJugador();
        LectorBinario lectorBinario = new LectorBinario(Principal.jugadores, Principal.file);
     }
 

@@ -57,13 +57,12 @@ public class LectorDeTexto extends Lector implements Leer {
                     contador++; //este contador nos sirve para saber cual es la primeralineaF
                 }
             }
-
             fr.close();
             return true;
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Error en la entrada");
+            return false;
         }
-        return false;
     }
 
     //depende de la instruccion se dara un caso y se reescribira la casilla con su nuevo comportamiento

@@ -1,5 +1,6 @@
 package interfaces_gui;
 
+import clases_para_nueva_partida.NuevaPartida;
 import clases_para_tablero.Tablero;
 import java.io.*;
 import java.util.ArrayList;
@@ -11,7 +12,8 @@ import lectores_de_archivos.LectorDeTexto;
 public class BuscadorDeArchivo extends javax.swing.JFrame {
 
     private Tablero tablero;
-    private ArrayList<Jugador> jugadores; 
+    private ArrayList<Jugador> jugadores;
+
     public BuscadorDeArchivo(ArrayList<Jugador> jugadores) {
         initComponents();
         this.jugadores = jugadores;
@@ -54,12 +56,14 @@ public class BuscadorDeArchivo extends javax.swing.JFrame {
         jLabel1.setText("Errores:");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, 170, -1));
 
+        txtErrores.setEditable(false);
         txtErrores.setColumns(20);
         txtErrores.setRows(5);
         jScrollPane3.setViewportView(txtErrores);
 
         jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 780, 190));
 
+        txtAsiertos.setEditable(false);
         txtAsiertos.setColumns(20);
         txtAsiertos.setRows(5);
         jScrollPane4.setViewportView(txtAsiertos);
@@ -102,15 +106,19 @@ public class BuscadorDeArchivo extends javax.swing.JFrame {
             try {
                 boolean leerArchivo = lectorDeTexto.leerArchivo(fichero);
                 if (leerArchivo == true) {
-                    //creamos la partida
+                    NuevaPartida nv = new NuevaPartida(tablero, jugadores);
                     
+                    this.dispose();
+                    System.out.println("LLEgo");
+                     nv.setVisible(true);
                 } else {
                     MenuPrincipal menuPrincipal = new MenuPrincipal();
-                    menuPrincipal.setVisible(true);
                     this.dispose();
+                    menuPrincipal.setVisible(true);
+
                 }
             } catch (Exception ex) {
-               
+
             }
         }
     }//GEN-LAST:event_btnBucarActionPerformed
