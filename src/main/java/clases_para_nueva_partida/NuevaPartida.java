@@ -350,8 +350,7 @@ public class NuevaPartida extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-    private int contadorPasaTurno = 0;
-    private boolean perdioTurnoElAnterior = false;
+
 //este metodo se activa cada que el jugador da enter
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
 
