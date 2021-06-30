@@ -47,7 +47,6 @@ public class NuevaPartida extends javax.swing.JFrame {
     private boolean banderaPieza = false;
     private HiloNumeroAleatorio hilo;
     private int turno = 1;
-    private int jugadorSinTurno = 0;
 
     /**
      * Constructor
@@ -59,6 +58,9 @@ public class NuevaPartida extends javax.swing.JFrame {
         initComponents();
         this.tablero = tablero;
         this.jugadores = jugadores;
+        //iniciamos el cronometro
+        Cronometro cronometro = new Cronometro(labelMins, labelSegs, labelMili);
+        cronometro.start();
         botones = new JButton[tablero.getX()][tablero.getY()];
         generarTablero();
         saberNombreDelJugadorDeTurno(turno);
@@ -122,10 +124,20 @@ public class NuevaPartida extends javax.swing.JFrame {
         }
     }
 
+    /*
+    Manda a traer el nombre segun el turno
+    ademas setea el texto de la label correspondient
+     */
     public void saberNombreDelJugadorDeTurno(int turno) {
         labelNombre.setText(jugadores.get(turno - 1).getNombre());
     }
 
+    /**
+     * Este metodo evalua si hay alguna pieza en la ultima casilla de la matriz
+     * de botones si es asi entonces manda a sobresescribir los jugadores
+     *
+     * @throws IOException
+     */
     public void saberSiHayGanador() throws IOException {
         for (int x = 0; x < botones.length; x++) {
             for (int y = 0; y < botones[x].length; y++) {
@@ -148,6 +160,15 @@ public class NuevaPartida extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Este metodo es el encargado de sobre escribir las partidas ganadas,
+     * jugadas y pedidas de ada jugador, ademas manda a sobreescribir l archivo
+     * binario
+     *
+     * @param idGanador
+     * @param idPerdedor
+     * @throws IOException
+     */
     public void sobreEscribirJugadores(int idGanador, int idPerdedor) throws IOException {
         for (Jugador item : Principal.jugadores.getJugadores()) {
             if (idGanador == item.getId()) {
@@ -185,6 +206,14 @@ public class NuevaPartida extends javax.swing.JFrame {
         labelDado2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         labelNombre = new javax.swing.JLabel();
+        labelMins = new javax.swing.JLabel();
+        labelMili = new javax.swing.JLabel();
+        labelSegs = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        labelQUeCasilla = new javax.swing.JLabel();
+        labelPenalizacion = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -221,6 +250,28 @@ public class NuevaPartida extends javax.swing.JFrame {
 
         labelNombre.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
 
+        labelMins.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        labelMins.setText("0");
+
+        labelMili.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        labelMili.setText("0");
+
+        labelSegs.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        labelSegs.setText("0");
+
+        jLabel7.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        jLabel7.setText(":");
+
+        jLabel8.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        jLabel8.setText(":");
+
+        jLabel9.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        jLabel9.setText("Tiempo:");
+
+        labelQUeCasilla.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
+
+        labelPenalizacion.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -228,45 +279,70 @@ public class NuevaPartida extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(contenedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelQUeCasilla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(80, 80, 80)
-                        .addComponent(labelDado1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(62, 62, 62)
-                        .addComponent(labelDado2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(labelPenalizacion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addGap(49, 49, 49)
+                                .addComponent(labelMins)
+                                .addGap(31, 31, 31)
+                                .addComponent(jLabel7)
+                                .addGap(27, 27, 27)
+                                .addComponent(labelSegs)
+                                .addGap(31, 31, 31)
+                                .addComponent(jLabel8)
+                                .addGap(29, 29, 29)
+                                .addComponent(labelMili))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGap(70, 70, 70)
+                                .addComponent(labelDado1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(62, 62, 62)
+                                .addComponent(labelDado2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addGap(18, 18, 18)
-                                .addComponent(labelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(44, Short.MAX_VALUE))
+                                .addComponent(labelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 152, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelMins, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelMili, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelSegs, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(38, 38, 38)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelDado1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelDado2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labelQUeCasilla, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(23, 23, 23)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(labelPenalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelDado1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelDado2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46))
         );
 
         pack();
@@ -284,9 +360,7 @@ public class NuevaPartida extends javax.swing.JFrame {
             hilo.detener();
             int suma = Integer.valueOf(labelDado1.getText()) + Integer.valueOf(labelDado2.getText());
             rastrearPieza(suma);
-
             try {
-
                 saberSiHayGanador();
             } catch (IOException ex) {
                 Logger.getLogger(NuevaPartida.class.getName()).log(Level.SEVERE, null, ex);
@@ -300,16 +374,16 @@ public class NuevaPartida extends javax.swing.JFrame {
             if (turno >= 3) {
                 turno = 1;
             }
-            if (jugadorSinTurno == 2) {
-                jugadorSinTurno = 0;
-                turno = 1;
-            } else if (jugadorSinTurno == 1) {
-                jugadorSinTurno = 0;
-                turno = 2;
-            }
+
             saberNombreDelJugadorDeTurno(turno);
         }
     }//GEN-LAST:event_formKeyPressed
+    /**
+     * Este metodo busca la pieza segun el turno pues 1 es rojo y 2 es amarillo
+     * entonces guarda el texto del borton pues sera el identificador
+     *
+     * @param suma
+     */
     public void rastrearPieza(int suma) {
         int numeroDePieza = 0;
         int posX = 0;
@@ -359,6 +433,7 @@ public class NuevaPartida extends javax.swing.JFrame {
             for (int x = 0; x < botones.length; x++) {
                 for (int y = 0; y < botones[x].length; y++) {
                     if (botones[x][y].getText().equals(numeroPiezaHaciaMover)) { //este if ve si la piza existe en el tablero
+                        labelQUeCasilla.setText("El jugador anterior avanzo hacia la casilla " + numeroPiezaHaciaMover);
                         switch (turno) { //si existe entonces quitamos la pieza del jugador y solo dejamos la contrincante
                             case 1:
                                 botones[posXPiezaVieja][posYPiezaVieja].setIcon(amarilla);
@@ -378,6 +453,7 @@ public class NuevaPartida extends javax.swing.JFrame {
             for (int x = 0; x < botones.length; x++) {
                 for (int y = 0; y < botones[x].length; y++) {
                     if (botones[x][y].getText().equals(numeroPiezaHaciaMover)) { //con los iteradores del for vemos si el numero de pieza existe en el tablero
+                        labelQUeCasilla.setText("El jugador anterior avanzo hacia la casilla " + numeroPiezaHaciaMover);
                         //este if ve si ya hay una pieza ocupando la casilla
                         if (botones[x][y].getIcon().toString().equals(roja.toString()) || botones[x][y].getIcon().toString().equals(amarilla.toString())) {
                             botones[x][y].setIcon(ambas);
@@ -437,6 +513,13 @@ public class NuevaPartida extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Este metodo da las funcionalidades de la casilla dependiendo su posicion
+     * en el arrglo
+     *
+     * @param x
+     * @param y
+     */
     public void saberFuncionalidadDeCasilla(int x, int y) {
         switch (tablero.getMiTablero()[x][y].getComportamiento()) {
             case "pierdeturno":
@@ -452,34 +535,38 @@ public class NuevaPartida extends javax.swing.JFrame {
                 retrocede(x, y);
                 break;
             case "subida":
+                labelPenalizacion.setText("El jugador anterior subio");
                 subidaOBajada(x, y);
                 break;
             case "bajada":
+                labelPenalizacion.setText("El jugador anterior bajo");
                 subidaOBajada(x, y);
                 break;
         }
     }
 
+    /**
+     * Este metodo indica quien piede el turno para que cada que hay un nuevo
+     * tecleo se sepa
+     */
     public void pierdeTurno() {
-        if (turno == 1) {
-            jugadorSinTurno = 1;
-        } else if (turno == 2) {
-            jugadorSinTurno = 2;
-        }
+        labelPenalizacion.setText("El jugador anterior pierde un turno");
     }
 
+    /**
+     * Este metodo indica quien piede el turno para que cada que hay un nuevo
+     * tecleo se sepa
+     */
     public void tiraDados() {
-        if (turno == 1) {
-            jugadorSinTurno = 1;
-        } else if (turno == 2) {
-            jugadorSinTurno = 2;
-        }
+        labelPenalizacion.setText("El jugador anterior vuelve a tirar los dados");
     }
 
     public void avanza(int viejaX, int viejaY) {
+
         int numeroDeCasillaActual = Integer.valueOf(botones[viejaX][viejaY].getText());
         int suma = tablero.getMiTablero()[viejaX][viejaY].getCantidadDePosiciones() + numeroDeCasillaActual;
         String casillaNueva = String.valueOf(suma);
+        labelPenalizacion.setText("El jugador anterior avanzo " + String.valueOf(tablero.getMiTablero()[viejaX][viejaY].getCantidadDePosiciones()) + " casillas mas");
         //aqui quitamos la pieza de su antigua pocision
         if (botones[viejaX][viejaY].getIcon().toString().equals(ambas.toString())) { //este if evalua si las pezas estan juntas
             for (int x = 0; x < botones.length; x++) {
@@ -533,6 +620,7 @@ public class NuevaPartida extends javax.swing.JFrame {
         int numeroDeCasillaActual = Integer.valueOf(botones[viejaX][viejaY].getText());
         int resta = numeroDeCasillaActual - tablero.getMiTablero()[viejaX][viejaY].getCantidadDePosiciones();
         String casillaNueva = String.valueOf(resta);
+        labelPenalizacion.setText("El jugador anterior retrocedio " + String.valueOf(tablero.getMiTablero()[viejaX][viejaY].getCantidadDePosiciones()) + " casillas");
         //aqui quitamos la pieza de su antigua pocision
         if (botones[viejaX][viejaY].getIcon().toString().equals(ambas.toString())) { //este if evalua si las pezas estan juntas
             for (int x = 0; x < botones.length; x++) {
@@ -626,8 +714,16 @@ public class NuevaPartida extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel labelDado1;
     private javax.swing.JLabel labelDado2;
+    private javax.swing.JLabel labelMili;
+    private javax.swing.JLabel labelMins;
     private javax.swing.JLabel labelNombre;
+    private javax.swing.JLabel labelPenalizacion;
+    private javax.swing.JLabel labelQUeCasilla;
+    private javax.swing.JLabel labelSegs;
     // End of variables declaration//GEN-END:variables
 }
