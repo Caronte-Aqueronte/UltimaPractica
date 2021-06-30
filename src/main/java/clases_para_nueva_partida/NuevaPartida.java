@@ -40,13 +40,15 @@ public class NuevaPartida extends javax.swing.JFrame {
     private ImageIcon pierdeTurno = new ImageIcon(pierdeTurnoImagen.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
     private ImageIcon retrocede = new ImageIcon(retrocedeImagen.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
     private ImageIcon subida = new ImageIcon(subidaImagen.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-    private ImageIcon roja = new ImageIcon(piezaRojaImagen.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-    private ImageIcon amarilla = new ImageIcon(piezaAmarillaImagen.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-    private ImageIcon ambas = new ImageIcon(ambasPiezasImagen.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+    private ImageIcon roja = new ImageIcon(piezaRojaImagen.getImage().getScaledInstance(37, 37, Image.SCALE_DEFAULT));
+    private ImageIcon amarilla = new ImageIcon(piezaAmarillaImagen.getImage().getScaledInstance(37, 37, Image.SCALE_DEFAULT));
+    private ImageIcon ambas = new ImageIcon(ambasPiezasImagen.getImage().getScaledInstance(37, 37, Image.SCALE_DEFAULT));
     //
     private boolean banderaPieza = false;
     private HiloNumeroAleatorio hilo;
     private int turno = 1;
+    private int contadorPasaTurno = 0;
+    private boolean perdioTurnoElAnterior = false;
 
     /**
      * Constructor
@@ -348,18 +350,20 @@ public class NuevaPartida extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    private int contadorPasaTurno = 0;
+    private boolean perdioTurnoElAnterior = false;
+//este metodo se activa cada que el jugador da enter
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
 
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER && banderaPieza == false) {
-            hilo = new HiloNumeroAleatorio("Hilo numero aleatorio", labelDado1, labelDado2);
-            banderaPieza = true;
-            hilo.start();
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER && banderaPieza == false) { //este if activa una bandera para saber si ya se preciono una vez el enter
+            hilo = new HiloNumeroAleatorio("Hilo numero aleatorio", labelDado1, labelDado2); //si es primera vez que se activa entonces declara un hilo
+            banderaPieza = true; //vuelve la bandera true
+            hilo.start(); //comienza el hilo
         } else if (evt.getKeyCode() == KeyEvent.VK_ENTER && banderaPieza == true) {
-            banderaPieza = false;
-            hilo.detener();
-            int suma = Integer.valueOf(labelDado1.getText()) + Integer.valueOf(labelDado2.getText());
-            rastrearPieza(suma);
+            banderaPieza = false; //vulve bandera false para ser utilizada de nuevo
+            hilo.detener(); //detiene el hilo
+            int suma = Integer.valueOf(labelDado1.getText()) + Integer.valueOf(labelDado2.getText()); //suma los numeros obtenidos en las labels
+            rastrearPieza(suma);//manda la suma y rastrea la pieza segun el turno
             try {
                 saberSiHayGanador();
             } catch (IOException ex) {
@@ -370,11 +374,24 @@ public class NuevaPartida extends javax.swing.JFrame {
              * nomrbe del jugador ademas reinicia el tuno cada que se vulva 3
              * para evitar excepciones
              */
+
             turno++;
             if (turno >= 3) {
                 turno = 1;
             }
-
+            if (perdioTurnoElAnterior == true) {
+                contadorPasaTurno++;
+                if (contadorPasaTurno >= 2) {
+                    contadorPasaTurno = 0;
+                    perdioTurnoElAnterior = false;
+                    if (turno == 1) {
+                        turno = 2;
+                    }
+                    if (turno == 2) {
+                        turno = 1;
+                    }
+                }
+            }
             saberNombreDelJugadorDeTurno(turno);
         }
     }//GEN-LAST:event_formKeyPressed
@@ -542,6 +559,9 @@ public class NuevaPartida extends javax.swing.JFrame {
                 labelPenalizacion.setText("El jugador anterior bajo");
                 subidaOBajada(x, y);
                 break;
+            default:
+                labelPenalizacion.setText("");
+                break;
         }
     }
 
@@ -551,6 +571,7 @@ public class NuevaPartida extends javax.swing.JFrame {
      */
     public void pierdeTurno() {
         labelPenalizacion.setText("El jugador anterior pierde un turno");
+        perdioTurnoElAnterior = true;
     }
 
     /**
@@ -559,6 +580,7 @@ public class NuevaPartida extends javax.swing.JFrame {
      */
     public void tiraDados() {
         labelPenalizacion.setText("El jugador anterior vuelve a tirar los dados");
+        perdioTurnoElAnterior = true;
     }
 
     public void avanza(int viejaX, int viejaY) {
@@ -576,12 +598,10 @@ public class NuevaPartida extends javax.swing.JFrame {
                             case 1:
                                 botones[viejaX][viejaY].setIcon(amarilla);
                                 botones[x][y].setIcon(roja);
-                                saberFuncionalidadDeCasilla(x, y);
                                 break;
                             case 2:
                                 botones[viejaX][viejaY].setIcon(roja);
                                 botones[x][y].setIcon(amarilla);
-                                saberFuncionalidadDeCasilla(x, y);
                                 break;
                         }
                     } //si la casilla no existe entonces pasa turno
@@ -599,12 +619,10 @@ public class NuevaPartida extends javax.swing.JFrame {
                             switch (turno) {
                                 case 1:
                                     botones[x][y].setIcon(roja);
-                                    saberFuncionalidadDeCasilla(x, y);
                                     asiganarImagenABoton(viejaX, viejaY);
                                     break;
                                 case 2:
                                     botones[x][y].setIcon(amarilla);
-                                    saberFuncionalidadDeCasilla(x, y);
                                     asiganarImagenABoton(viejaX, viejaY);
                                     break;
                             }
@@ -620,6 +638,7 @@ public class NuevaPartida extends javax.swing.JFrame {
         int numeroDeCasillaActual = Integer.valueOf(botones[viejaX][viejaY].getText());
         int resta = numeroDeCasillaActual - tablero.getMiTablero()[viejaX][viejaY].getCantidadDePosiciones();
         String casillaNueva = String.valueOf(resta);
+        System.out.println("Se tiene que mover a " + casillaNueva);
         labelPenalizacion.setText("El jugador anterior retrocedio " + String.valueOf(tablero.getMiTablero()[viejaX][viejaY].getCantidadDePosiciones()) + " casillas");
         //aqui quitamos la pieza de su antigua pocision
         if (botones[viejaX][viejaY].getIcon().toString().equals(ambas.toString())) { //este if evalua si las pezas estan juntas
@@ -630,12 +649,10 @@ public class NuevaPartida extends javax.swing.JFrame {
                             case 1:
                                 botones[viejaX][viejaY].setIcon(amarilla);
                                 botones[x][y].setIcon(roja);
-                                saberFuncionalidadDeCasilla(x, y);
                                 break;
                             case 2:
                                 botones[viejaX][viejaY].setIcon(roja);
                                 botones[x][y].setIcon(amarilla);
-                                saberFuncionalidadDeCasilla(x, y);
                                 break;
                         }
                     } //si la casilla no existe entonces pasa turno
@@ -645,6 +662,7 @@ public class NuevaPartida extends javax.swing.JFrame {
             for (int x = 0; x < botones.length; x++) {
                 for (int y = 0; y < botones[x].length; y++) {
                     if (botones[x][y].getText().equals(casillaNueva)) { //con los iteradores del for vemos si el numero de pieza existe en el tablero
+                        System.out.println("entro");
                         //este if ve si ya hay una pieza ocupando la casilla
                         if (botones[x][y].getIcon().toString().equals(roja.toString()) || botones[x][y].getIcon().toString().equals(amarilla.toString())) {
                             botones[x][y].setIcon(ambas);
@@ -653,12 +671,11 @@ public class NuevaPartida extends javax.swing.JFrame {
                             switch (turno) {
                                 case 1:
                                     botones[x][y].setIcon(roja);
-                                    saberFuncionalidadDeCasilla(x, y);
                                     asiganarImagenABoton(viejaX, viejaY);
                                     break;
                                 case 2:
+                                    System.out.println("se tuvo que poner amarilllo la " + x + y);
                                     botones[x][y].setIcon(amarilla);
-                                    saberFuncionalidadDeCasilla(x, y);
                                     asiganarImagenABoton(viejaX, viejaY);
                                     break;
                             }
@@ -679,12 +696,10 @@ public class NuevaPartida extends javax.swing.JFrame {
                     case 1:
                         botones[viejaX][viejaY].setIcon(amarilla);
                         botones[x][y].setIcon(roja);
-                        saberFuncionalidadDeCasilla(x, y);
                         break;
                     case 2:
                         botones[viejaX][viejaY].setIcon(roja);
                         botones[x][y].setIcon(amarilla);
-                        saberFuncionalidadDeCasilla(x, y);
                         break;
                 }
             } else {
@@ -696,12 +711,10 @@ public class NuevaPartida extends javax.swing.JFrame {
                     switch (turno) {
                         case 1:
                             botones[x][y].setIcon(roja);
-                            saberFuncionalidadDeCasilla(x, y);
                             asiganarImagenABoton(viejaX, viejaY);
                             break;
                         case 2:
                             botones[x][y].setIcon(amarilla);
-                            saberFuncionalidadDeCasilla(x, y);
                             asiganarImagenABoton(viejaX, viejaY);
                             break;
                     }
